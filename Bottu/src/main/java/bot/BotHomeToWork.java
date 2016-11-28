@@ -35,6 +35,7 @@ public class BotHomeToWork {
 	static Point town1ThirdMove;
 	static Point town1FourthMoveClickOnly;
 	static Point town1FifthMoveClickOnly;
+	static Point ballHealthPixelColorLocation80;
 
 	// commented checkIfHealthIsLow(); not commented
 
@@ -43,59 +44,70 @@ public class BotHomeToWork {
 		r.setAutoDelay(20);
 		r.setAutoWaitForIdle(true);
 		ra = new Random();
+//		Point customMove1_1 = new Point(900, 900);old
+//		Point customMove1_2 = new Point(570, 900);old
+//		Point customMove1_3 = new Point(700, 700);old
+		 town4FirstMove = new Point(900, 900); // work
+		 town4SecondMove = new Point(570, 900);
+		 town4ClickingDoor = new Point(700, 700);
+		 newInstance = new Point(450, 365);
+		 levelUpGemsLocation = new Point(1850,340);
+		
+		 town1FirstMove = new Point(870,1100);
+		 town1SecondMove = new Point(870,1100);
+		 town1ThirdMove = new Point(870,770);
+		 town1FourthMoveClickOnly = new Point(420,160);// selecting act2
+		 town1FifthMoveClickOnly = new Point(460,490);// selecting TheSFor
+		
+		 clickSelf = new Point(950, 550);
+		 logout = new Point(1001, 525);
+		 ballHealthPixelColorLocation = new Point(180, 1040);
+		 ballHealthPixelColorLocation80 = new Point(130, 1000); // 80% health left
+		 //TODO make pot drink at 80%
+		 lastCharge1stFlaskLocation = new Point(358, 1170);
+		 ballHealthColor = -6875105;
+		 lastChargeFlaskColor = -11070204;
+		 timeAfterEnteringInstanceMS = 15000;
+		 timeAfterLoggingInMS = 20000;
+		
+		 left = new Point(500, 500);
+		 right = new Point(1300, 501);
+		 bot = new Point(902, 904);
+		 top = new Point(903, 180);
 
-		// townFirstMove = new Point(1120, 1050); // work
-		// townSecondMove = new Point(280, 1020);
-		// townClickingDoor = new Point(850, 600);
-		// newInstance = new Point(450, 365);
-		//
-		// clickSelf = new Point(950, 550);
-		// logout = new Point(1001, 525);
-		// ballHealthPixelColorLocation = new Point(180, 1040);
-		// lastCharge1stFlaskLocation = new Point(358, 1170);
-		// ballHealthColor = -6875105;
-		// lastChargeFlaskColor = -11070204;
-		// timeAfterEnteringLakeMS = 15000;
-		// timeAfterLoggingInMS = 20000;
-		//
-		// left = new Point(500, 500);
-		// right = new Point(1300, 501);
-		// bot = new Point(902, 904);
-		// top = new Point(903, 180);
-
-		town4FirstMove = new Point(420, 680); // home
-		town4SecondMove = new Point(220, 650);
-		town4ClickingDoor = new Point(440, 350);
-		newInstance = new Point(190, 230);
-		levelUpGemsLocation = new Point(980, 220);
-
-		town1FirstMove = new Point(450, 700);
-		town1SecondMove = new Point(450, 700);
-		town1ThirdMove = new Point(500, 500);
-		town1FourthMoveClickOnly = new Point(250, 105);// selecting act2
-		town1FifthMoveClickOnly = new Point(295, 315);// selecting TheSFor
-
-		clickSelf = new Point(525, 340);
-		logout = new Point(550, 336);
-		ballHealthPixelColorLocation = new Point(130, 680);
-		lastCharge1stFlaskLocation = new Point(228, 748);
-		ballHealthColor = -8778219;
-		lastChargeFlaskColor = -11399167;
-		timeAfterEnteringInstanceMS = 25000;
-		timeAfterLoggingInMS = 30000;
-
-		left = new Point(200, 300);
-		right = new Point(800, 302);
-		bot = new Point(501, 500);
-		top = new Point(502, 110);
+//		town4FirstMove = new Point(420, 680); // home
+//		town4SecondMove = new Point(220, 650);
+//		town4ClickingDoor = new Point(440, 350);
+//		newInstance = new Point(190, 230);
+//		levelUpGemsLocation = new Point(980, 220);
+//
+//		town1FirstMove = new Point(450, 700);
+//		town1SecondMove = new Point(450, 700);
+//		town1ThirdMove = new Point(500, 500);
+//		town1FourthMoveClickOnly = new Point(250, 105);// selecting act2
+//		town1FifthMoveClickOnly = new Point(295, 315);// selecting TheSFor
+//
+//		clickSelf = new Point(525, 340);
+//		logout = new Point(550, 336);
+//		ballHealthPixelColorLocation = new Point(130, 680);
+//		lastCharge1stFlaskLocation = new Point(228, 748);
+//		ballHealthColor = -8778219;
+//		lastChargeFlaskColor = -11399167;
+//		timeAfterEnteringInstanceMS = 25000;
+//		timeAfterLoggingInMS = 30000;
+//
+//		left = new Point(200, 300);
+//		right = new Point(800, 302);
+//		bot = new Point(501, 500);
+//		top = new Point(502, 110);
 
 		run();
 
 	}
 
 	private static void run() throws Exception {
-//		fireFlicker();
-		fStormOrBFall();
+		fireFlicker();
+//		fStormOrBFall();
 
 	}
 	
@@ -112,8 +124,8 @@ public class BotHomeToWork {
 	public static void fireFlicker() throws Exception{
 		while (true) {
 			breakCycle = false;
-			inCharSelect();
-			inTownAndOutsideImprLakeFlicker();
+//			inCharSelect();
+//			inTownAndOutsideImprLakeFlicker();
 			outside4thTownFlicker();
 		}
 	}
@@ -178,9 +190,10 @@ public class BotHomeToWork {
 
 			r.mousePress(InputEvent.BUTTON3_MASK);
 			r.delay(200);
-
+			
 			// 1 time guaranteed right and every other - 1 bot
 			instaClickAndMoveWith1SDelay(right.x, right.y);
+			testPosition(right.x, right.y);
 			if (ra.nextBoolean()) {
 				instaClickAndMoveWith1SDelay(bot.x, bot.y);
 			}
@@ -198,7 +211,7 @@ public class BotHomeToWork {
 			// else if (temp == 3) {
 			// instaClickAndMoveWith1SDelay(top.x, top.y);
 			// }
-
+			
 			checkIfHealthIsLow();
 			r.delay(100);
 
@@ -235,6 +248,7 @@ public class BotHomeToWork {
 				break;
 			}
 			ifNiceItemFound();
+			// hold mouse click near char and check if he is stuck
 
 			r.delay(200);
 			//TODO - first logout then drinks potion 2, no pot 1 drink
@@ -244,17 +258,22 @@ public class BotHomeToWork {
 //			instaClickAndMoveWith1SDelay(left.x, left.y);
 			instaClickAndMoveWith2SDelay(100,100);
 			if (ra.nextBoolean()) {
-				instaClickAndMoveWith1SDelay(right.x, right.y);
+				instaClickAndMoveWith1SDelay(1800,200);
 			}
 			checkIfHealthIsLow();
 			
-			if (ra.nextBoolean()) {
-				emergency3rdPotDrinkMana();
-			}
 			
-//			cast3SpellsAtCenter();
 			//TODO he doesn't wait for the totem
 			castTotemAtSelf();
+			r.delay(1000);
+			checkIfHealthIsLow();
+			r.delay(1000);
+			checkIfHealthIsLow();
+			r.delay(1000);
+			checkIfHealthIsLow();
+			r.delay(1000);
+			checkIfHealthIsLow();
+			r.delay(1000);
 			checkIfHealthIsLow();
 			r.delay(100);
 
@@ -362,6 +381,11 @@ public class BotHomeToWork {
 				if (found) {
 					break;
 				}
+				//work ballHealth detecting as item
+				//TODO check if problems at h
+				if(i >135 && i < 157 && p > 1045 && p < 1063 ){
+					continue;
+				}
 				if (image.getRGB(i, p) == -394503 || image.getRGB(i, p) == -3629439) {
 					// there is an exalt here // or an alchemy
 					point = new Point(i + 5, p + 5);
@@ -438,6 +462,7 @@ public class BotHomeToWork {
 	}
 
 	private static void ifPotionEmptyLogout() throws Exception {
+		//TODO not same color as lvl 60 flask color
 		Color color = r.getPixelColor(lastCharge1stFlaskLocation.x,
 				lastCharge1stFlaskLocation.y);
 		if (color.getRGB() != lastChargeFlaskColor) {
@@ -515,8 +540,7 @@ public class BotHomeToWork {
 		r.delay(2000);
 	}
 
-	private static void testPositionAndHealth(int x, int y) throws Exception {
-		checkIfHealthIsLow();
+	private static void testPosition(int x, int y) throws Exception {
 		Point p = MouseInfo.getPointerInfo().getLocation();
 		if (p.x != x || p.y != y) {
 			throw new Exception();

@@ -2,6 +2,7 @@ package test;
 
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -17,7 +18,9 @@ public class AnotherLocatioNTest {
 		r = new Robot();
 		r.delay(1500);
 //		ifNiceItemFound();
-		r.mouseMove(525, 340);
+//		r.mouseMove(525, 340);
+		
+		Point p = MouseInfo.getPointerInfo().getLocation();
 
 		Color color = r.getPixelColor(525, 340);
 		

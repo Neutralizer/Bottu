@@ -1,16 +1,23 @@
 package test;
 
 import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.Robot;
 
 public class AndYetAnotherLocationTest {
 
-	public static void main(String[] args) throws AWTException {
+	public static void main(String[] args) throws Exception {
 		Robot r = new Robot();
 		
 		r.delay(1000);
-//		r.mouseMove(450, 700);
-		r.mouseMove(295, 315);
+		Point p = new Point(180, 1040);
+		r.mouseMove(p.x, p.y);
+		
+		Color color = r.getPixelColor(p.x, p.y);
+		
+		System.out.println(color.getRGB());
+		System.out.println(color);
 
 	}
 
