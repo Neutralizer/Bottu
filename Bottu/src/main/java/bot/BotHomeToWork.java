@@ -16,9 +16,9 @@ public class BotHomeToWork {
 	static Point bot;
 	static Point top;
 	static Point logout;
-	static Point townFirstMove;
-	static Point townSecondMove;
-	static Point townClickingDoor;
+	static Point town4FirstMove;
+	static Point town4SecondMove;
+	static Point town4ClickingDoor;
 	static Point clickSelf;
 	static Point ballHealthPixelColorLocation;
 	static Point lastCharge1stFlaskLocation;
@@ -28,8 +28,13 @@ public class BotHomeToWork {
 	static boolean logoutBoolean = false;
 	static int ballHealthColor;
 	static int lastChargeFlaskColor;
-	static int timeAfterEnteringLakeMS;
+	static int timeAfterEnteringInstanceMS;
 	static int timeAfterLoggingInMS;
+	static Point town1FirstMove;
+	static Point town1SecondMove;
+	static Point town1ThirdMove;
+	static Point town1FourthMoveClickOnly;
+	static Point town1FifthMoveClickOnly;
 
 	// commented checkIfHealthIsLow(); not commented
 
@@ -58,11 +63,17 @@ public class BotHomeToWork {
 		// bot = new Point(902, 904);
 		// top = new Point(903, 180);
 
-		townFirstMove = new Point(420, 680); // home
-		townSecondMove = new Point(220, 650);
-		townClickingDoor = new Point(440, 350);
+		town4FirstMove = new Point(420, 680); // home
+		town4SecondMove = new Point(220, 650);
+		town4ClickingDoor = new Point(440, 350);
 		newInstance = new Point(190, 230);
 		levelUpGemsLocation = new Point(980, 220);
+
+		town1FirstMove = new Point(450, 700);
+		town1SecondMove = new Point(450, 700);
+		town1ThirdMove = new Point(500, 500);
+		town1FourthMoveClickOnly = new Point(250, 105);// selecting act2
+		town1FifthMoveClickOnly = new Point(295, 315);// selecting TheSFor
 
 		clickSelf = new Point(525, 340);
 		logout = new Point(550, 336);
@@ -70,7 +81,7 @@ public class BotHomeToWork {
 		lastCharge1stFlaskLocation = new Point(228, 748);
 		ballHealthColor = -8778219;
 		lastChargeFlaskColor = -11399167;
-		timeAfterEnteringLakeMS = 25000;
+		timeAfterEnteringInstanceMS = 25000;
 		timeAfterLoggingInMS = 30000;
 
 		left = new Point(200, 300);
@@ -83,14 +94,28 @@ public class BotHomeToWork {
 	}
 
 	private static void run() throws Exception {
+//		fireFlicker();
+		fStormOrBFall();
+
+	}
+	
+	static void fStormOrBFall() throws Exception {
 		while (true) {
 			breakCycle = false;
 			inCharSelect();
-			inTownAndOutsideImpr();
-			outside4thTown();
+			inTownAndOutsideAct1ToTSF();
+			outside2ndTownTSFfStormOrBFall();
 		}
-		// moveVariation1();
+		
+	}
 
+	public static void fireFlicker() throws Exception{
+		while (true) {
+			breakCycle = false;
+			inCharSelect();
+			inTownAndOutsideImprLakeFlicker();
+			outside4thTownFlicker();
+		}
 	}
 
 	private static void inCharSelect() {
@@ -102,10 +127,10 @@ public class BotHomeToWork {
 
 	}
 
-	private static void inTownAndOutsideImpr() throws Exception {
+	//TODO - add levelupgems method 
+	private static void inTownAndOutsideImprLakeFlicker() throws Exception {
 
-		// moveVariation1();
-		originalMoveVariationInTown();
+		originalMoveVariationInTown4CTRLPressed();
 
 		// going to the instance button
 		instaMoveMouse((int) newInstance.getX(), (int) newInstance.getY());
@@ -113,7 +138,7 @@ public class BotHomeToWork {
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.delay(40);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		r.delay(timeAfterEnteringLakeMS);
+		r.delay(timeAfterEnteringInstanceMS);
 
 		castCursesAndGolem();
 		r.delay(1000);
@@ -140,18 +165,17 @@ public class BotHomeToWork {
 		// instaClickAndMoveWith1SDelay(right.x,right.y);
 	}
 
-	private static void outside4thTown() throws Exception {
+	private static void outside4thTownFlicker() throws Exception {
 
-		 r.delay(2000);
+		r.delay(2000);
 
 		long startTime = System.currentTimeMillis();
 		while (true) {
 			if (breakCycle) {
 				break;
 			}
-			//TODO char is moving when locating the item and missing it - sh b fx
 			ifNiceItemFound();
-			
+
 			r.mousePress(InputEvent.BUTTON3_MASK);
 			r.delay(200);
 
@@ -164,20 +188,20 @@ public class BotHomeToWork {
 			int temp = ra.nextInt(2);
 			if (temp == 0) {
 				instaClickAndMoveWith1SDelay(left.x, left.y);
-			}else 
-//				if (temp == 1) {
-//				instaClickAndMoveWith1SDelay(right.x, right.y);
-//			} else 
-				if (temp == 2 || temp == 1) {
-					instaClickAndMoveWith1SDelay(bot.x, bot.y);
-			} 
-//			else if (temp == 3) {
-//				instaClickAndMoveWith1SDelay(top.x, top.y);
-//			}
+			} else
+			// if (temp == 1) {
+			// instaClickAndMoveWith1SDelay(right.x, right.y);
+			// } else
+			if (temp == 2 || temp == 1) {
+				instaClickAndMoveWith1SDelay(bot.x, bot.y);
+			}
+			// else if (temp == 3) {
+			// instaClickAndMoveWith1SDelay(top.x, top.y);
+			// }
 
 			checkIfHealthIsLow();
 			r.delay(100);
-			
+
 			r.mouseRelease(InputEvent.BUTTON3_MASK);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
@@ -189,12 +213,147 @@ public class BotHomeToWork {
 		}
 	}
 
+	private static void inTownAndOutsideAct1ToTSF() throws Exception {
+
+		originalMoveVariationInTown1toTSF();
+		createNewInstanceFromMinimap();
+		castCursesAndGolem();
+		r.delay(1000);
+		
+		levelUpGems();
+
+
+	}
+	
+	private static void outside2ndTownTSFfStormOrBFall() throws Exception {
+
+		r.delay(2000);
+
+		long startTime = System.currentTimeMillis();
+		while (true) {
+			if (breakCycle) {
+				break;
+			}
+			ifNiceItemFound();
+
+			r.delay(200);
+			//TODO - first logout then drinks potion 2, no pot 1 drink
+//TODO			checkIfCharHasMoved(); // bool check 4-5 colors if they have changed
+			// 1 time guaranteed top and left +  right every other
+//			instaClickAndMoveWith1SDelay(top.x, top.y);
+//			instaClickAndMoveWith1SDelay(left.x, left.y);
+			instaClickAndMoveWith2SDelay(100,100);
+			if (ra.nextBoolean()) {
+				instaClickAndMoveWith1SDelay(right.x, right.y);
+			}
+			checkIfHealthIsLow();
+			
+			if (ra.nextBoolean()) {
+				emergency3rdPotDrinkMana();
+			}
+			
+//			cast3SpellsAtCenter();
+			//TODO he doesn't wait for the totem
+			castTotemAtSelf();
+			checkIfHealthIsLow();
+			r.delay(100);
+
+
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			// if the time in the instance is more than 2 min - relog
+			if (estimatedTime > 100000) {
+				globalLogout();
+				break;
+			}
+		}
+	}
+
+	private static void castTotemAtSelf() {
+		instaClickAndMoveWith1SDelay(clickSelf.x, clickSelf.y);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(100);
+		
+	}
+
+	private static void cast3SpellsAtCenter() {
+		instaMoveMouse(clickSelf.x, clickSelf.y);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(600);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(600);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(100);
+		
+	}
+
+	private static void levelUpGems() {
+		// level up gems
+		int temp = ra.nextInt(100);
+		if (temp < 20) {
+			instaMoveMouse(levelUpGemsLocation.x, levelUpGemsLocation.y);
+			for (int i = 0; i < 10; i++) {
+				r.delay(40);
+				r.mousePress(InputEvent.BUTTON1_MASK);
+				r.delay(40);
+				r.mouseRelease(InputEvent.BUTTON1_MASK);
+				r.delay(40);
+			}
+		}
+	}
+
+	private static void originalMoveVariationInTown1toTSF() {
+		// r.delay(6000);
+		// first step after login
+		instaClickAndMoveWith1SDelay(town1FirstMove.x, town1FirstMove.y);
+		instaClickAndMoveWith1SDelay(town1SecondMove.x, town1SecondMove.y);
+		instaClickAndMoveWith1SDelay(town1ThirdMove.x, town1ThirdMove.y);
+		instaClickAndMoveWith1SDelay(town1FourthMoveClickOnly.x,
+				town1FourthMoveClickOnly.y);
+		// TODO from createNewInstanceFromMinimap get ctrl pressed in this method
+
+	}
+
+	public static void goingToTheInstanceButton() {
+		instaMoveMouse((int) newInstance.getX(), (int) newInstance.getY());
+		r.delay(40);
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		r.delay(40);
+		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		r.delay(timeAfterEnteringInstanceMS);
+	}
+
+	public static void createNewInstanceFromMinimap() {
+		r.keyPress(KeyEvent.VK_CONTROL);
+		instaClickAndMoveWith1SDelay(town1FifthMoveClickOnly.x,
+				town1FifthMoveClickOnly.y);
+//		r.delay(200);
+//		r.mousePress(InputEvent.BUTTON1_MASK);
+//		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		r.delay(60);
+		r.keyRelease(KeyEvent.VK_CONTROL);
+		r.delay(1000);
+		instaMoveMouse((int) newInstance.getX(), (int) newInstance.getY());
+		r.delay(40);
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		r.delay(40);
+		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		r.delay(timeAfterEnteringInstanceMS);
+	}
+
 	private static void ifNiceItemFound() {
 		Rectangle scr = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage image = r.createScreenCapture(scr);
 		Point point = null;
 		boolean found = false;
-		
+
 		for (int i = 0; i < image.getWidth(); i++) {
 			if (found) {
 				break;
@@ -214,48 +373,28 @@ public class BotHomeToWork {
 		}
 
 		if (point != null) {
-//			r.delay(50);
-//			r.mouseRelease(InputEvent.BUTTON3_MASK);
+			// r.delay(50);
+			// r.mouseRelease(InputEvent.BUTTON3_MASK);
 			instaMoveMouse(clickSelf.x, clickSelf.y);
 			r.mousePress(InputEvent.BUTTON1_MASK);
 			r.delay(50);
 			r.mouseRelease(InputEvent.BUTTON1_MASK);
 			instaClickAndMoveWith2SDelay(point.x + 5, point.y + 5);
 
-//			r.mousePress(InputEvent.BUTTON3_MASK);
+			// r.mousePress(InputEvent.BUTTON3_MASK);
 		}
 	}
 
-	public static void originalMoveVariationInTown() {
+	public static void originalMoveVariationInTown4CTRLPressed() {
 		// r.delay(6000);
 		// first step after login
-		instaClickAndMoveWith2SDelay((int) townFirstMove.getX(),
-				(int) townFirstMove.getY());
+		instaClickAndMoveWith2SDelay((int) town4FirstMove.getX(),
+				(int) town4FirstMove.getY());
 		// going to above potion location before the gate
-		instaClickAndMoveWith2SDelay((int) townSecondMove.getX(),
-				(int) townSecondMove.getY());
+		instaClickAndMoveWith2SDelay((int) town4SecondMove.getX(),
+				(int) town4SecondMove.getY());
 		// clicking the door
-		instaMoveMouse((int) townClickingDoor.getX(), (int) townClickingDoor.getY());
-		r.keyPress(KeyEvent.VK_CONTROL);
-		r.delay(200);
-		r.mousePress(InputEvent.BUTTON1_MASK);
-		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		r.delay(60);
-		r.keyRelease(KeyEvent.VK_CONTROL);
-		r.delay(1000);
-	}
-
-	public static void moveVariation1() {
-		r.delay(1000);
-		Point customMove1_1 = new Point(900, 900);
-		Point customMove1_2 = new Point(570, 900);
-		Point customMove1_3 = new Point(700, 700);
-		// first step after login
-		instaClickAndMoveWith1SDelay(customMove1_1.x, customMove1_1.y);
-		// going to above potion location before the gate
-		instaClickAndMoveWith1SDelay(customMove1_2.x, customMove1_2.y);
-		// clicking the door
-		instaMoveMouse(customMove1_3.x, customMove1_3.y);
+		instaMoveMouse((int) town4ClickingDoor.getX(), (int) town4ClickingDoor.getY());
 		r.keyPress(KeyEvent.VK_CONTROL);
 		r.delay(200);
 		r.mousePress(InputEvent.BUTTON1_MASK);
@@ -287,7 +426,6 @@ public class BotHomeToWork {
 		r.delay(500);
 
 	}
-
 
 	private static void checkIfHealthIsLow() throws Exception {
 		Color color = r.getPixelColor(ballHealthPixelColorLocation.x,
@@ -325,14 +463,6 @@ public class BotHomeToWork {
 		// r.delay(10000);
 	}
 
-	private static void emergency2ndPotDrink() {
-		r.delay(100);
-		r.keyPress(KeyEvent.VK_1);
-		r.delay(100);
-		r.keyRelease(KeyEvent.VK_1);
-
-	}
-
 	private static void useHealthPotion() {
 		r.delay(100);
 		r.keyPress(KeyEvent.VK_1);
@@ -340,6 +470,23 @@ public class BotHomeToWork {
 		r.keyRelease(KeyEvent.VK_1);
 
 	}
+	
+	private static void emergency2ndPotDrink() {
+		r.delay(100);
+		r.keyPress(KeyEvent.VK_2);
+		r.delay(100);
+		r.keyRelease(KeyEvent.VK_2);
+
+	}
+	
+	private static void emergency3rdPotDrinkMana() {
+		r.delay(100);
+		r.keyPress(KeyEvent.VK_3);
+		r.delay(100);
+		r.keyRelease(KeyEvent.VK_3);
+	}
+
+
 
 	private static void instaMoveMouse(int x, int y) {
 		r.delay(50);
@@ -368,7 +515,6 @@ public class BotHomeToWork {
 		r.delay(2000);
 	}
 
-
 	private static void testPositionAndHealth(int x, int y) throws Exception {
 		checkIfHealthIsLow();
 		Point p = MouseInfo.getPointerInfo().getLocation();
@@ -377,7 +523,6 @@ public class BotHomeToWork {
 		}
 
 	}
-
 
 	// full -11070204
 	// empty -11848175
@@ -393,7 +538,7 @@ public class BotHomeToWork {
 	// SetBackgroundColor 254 253 252 251
 	// SetBackgroundColor 252 253 252 253 - home
 
-	//ilvl 80 - nightmare bascinet
-	//-3645668
-	//java.awt.Color[r=200,g=95,b=28]
+	// ilvl 80 - nightmare bascinet
+	// -3645668
+	// java.awt.Color[r=200,g=95,b=28]
 }
