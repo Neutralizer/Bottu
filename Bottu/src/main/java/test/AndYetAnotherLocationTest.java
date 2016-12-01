@@ -8,8 +8,39 @@ import java.awt.Robot;
 public class AndYetAnotherLocationTest {
 
 	public static void main(String[] args) throws Exception {
-		Robot r = new Robot();
+		Robot robot = new Robot();
 		
+//		testSinglePosition(robot);
+		test4Positions(robot);
+
+	}
+	
+	private static void test4Positions(Robot r) {
+		r.delay(1000);
+		Point left = new Point(200, 300);
+		Point right = new Point(800, 302);
+		Point top = new Point(502, 110);
+		Point bot = new Point(501, 500);
+		
+		Color colorL = r.getPixelColor(left.x, left.y);
+		Color colorR = r.getPixelColor(right.x, right.y);
+		Color colorT = r.getPixelColor(top.x, top.y);
+		Color colorB = r.getPixelColor(bot.x, bot.y);
+		
+		System.out.println(colorL.getRGB());
+		System.out.println(colorL);
+		
+		System.out.println(colorR.getRGB());
+		System.out.println(colorR);
+		
+		System.out.println(colorT.getRGB());
+		System.out.println(colorT);
+		
+		System.out.println(colorB.getRGB());
+		System.out.println(colorB);
+	}
+
+	public static void testSinglePosition(Robot r){
 		r.delay(1000);
 		Point p = new Point(335,305);
 		r.mouseMove(p.x, p.y);
@@ -18,7 +49,6 @@ public class AndYetAnotherLocationTest {
 		
 		System.out.println(color.getRGB());
 		System.out.println(color);
-
 	}
 
 }
