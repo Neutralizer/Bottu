@@ -136,10 +136,10 @@ public class BotHomeToWork {
 			// TODO make char leave the items in the stash every 50 logins
 			// inTownAndOutsideAct1ToTSF();
 			// outside2ndTownFall();
-			inTownAndOutsideAct3toTCS();
-			outside3rdTownFall();
-			// inTown4AndOutsideLakeFall();
-			// outside4thTownFall();
+//			inTownAndOutsideAct3toTCS();
+//			outside3rdTownFall();
+			 inTown4AndOutsideLakeFall();
+			 outside4thTownFall();
 
 		}
 
@@ -186,9 +186,15 @@ public class BotHomeToWork {
 	}
 
 	private static void whenInLoadingScreenWait() throws Exception {
-
+		long startTime = System.currentTimeMillis();
+		
 		boolean flag = true;
 		while (flag) {
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			if (estimatedTime > 80000) {
+				globalLogout();
+				break;
+			}
 			Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
 					ballHealthPixelColorLocation80.y);
 			// no health ball present => we are in loading screen
@@ -496,7 +502,6 @@ public class BotHomeToWork {
 	}
 
 	private static void outside4thTownFall() throws Exception {
-
 		// r.delay(2000);
 
 		long startTime = System.currentTimeMillis();
@@ -528,28 +533,29 @@ public class BotHomeToWork {
 			// TODO sometimes totem is not cast when char is inside a
 			// no collision building
 
-			checkIfHealthIsLow();
-			ifNiceItemFound();
-			castTotemAtSelf();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			ifNiceItemFound();
-			castTotemAtSelf();
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(100);
+			breakCycle = checkHealthAndCastTotems();
+//			checkIfHealthIsLow();
+//			ifNiceItemFound();
+//			castTotemAtSelf();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			ifNiceItemFound();
+//			castTotemAtSelf();
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(1000);
+//			checkIfHealthIsLow();
+//			r.delay(100);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 
