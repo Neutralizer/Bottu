@@ -6,13 +6,32 @@ import java.awt.Point;
 import java.awt.Robot;
 
 public class AndYetAnotherLocationTest {
+	
+	int ballHealthColor80 = -5627091;
 
 	public static void main(String[] args) throws Exception {
 		Robot robot = new Robot();
 		
-//		testSinglePosition(robot);
-		test4Positions(robot);
+		
+		
+		testSinglePosition(robot);
+//		test4Positions(robot);
+		// 80 gray -14148323
+		//java.awt.Color[r=40,g=29,b=29]
+		//-13884117
+		//java.awt.Color[r=44,g=37,b=43]
 
+	}
+	
+	public static void testSinglePosition(Robot r){
+		r.delay(1000);
+		Point p = new Point(130, 695);
+		r.mouseMove(p.x, p.y);
+		
+		Color color = r.getPixelColor(p.x, p.y);
+		
+		System.out.println(color.getRGB());
+		System.out.println(color);
 	}
 	
 	private static void test4Positions(Robot r) {
@@ -40,15 +59,6 @@ public class AndYetAnotherLocationTest {
 		System.out.println(colorB);
 	}
 
-	public static void testSinglePosition(Robot r){
-		r.delay(1000);
-		Point p = new Point(335,305);
-		r.mouseMove(p.x, p.y);
-		
-		Color color = r.getPixelColor(p.x, p.y);
-		
-		System.out.println(color.getRGB());
-		System.out.println(color);
-	}
+
 
 }

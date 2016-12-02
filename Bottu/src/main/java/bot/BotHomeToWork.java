@@ -42,6 +42,9 @@ public class BotHomeToWork {
 	private static Point town2SecondMove;
 	private static Point town2ThirdMove;
 	private static int[] pixelColorsCheck; // not used
+	private static int loginNumbers;
+	private static int ballHealthColorDead;
+	private static int ballHealthColor80Dead;
 
 	// not using flask color now
 
@@ -104,16 +107,18 @@ public class BotHomeToWork {
 		lastCharge1stFlaskLocation = new Point(228, 748);
 		ballHealthColor = -8123879;
 		ballHealthColor80 = -5627091;
+		ballHealthColorDead = -13884117;
+		ballHealthColor80Dead = -14148323;
 		lastChargeFlaskColor = -11399167;
-		timeAfterEnteringInstanceMS = 3000;
-		timeAfterLoggingInMS = 4000;
+		timeAfterEnteringInstanceMS = 5000;
+		timeAfterLoggingInMS = 5000;
 		pixelColorsCheck = new int[] { 1, 2, 3, 4 };
 
 		left = new Point(200, 300);
 		right = new Point(800, 302);
 		top = new Point(502, 110);
 		bot = new Point(501, 500);
-
+		loginNumbers = 0;
 		run();
 
 	}
@@ -127,13 +132,14 @@ public class BotHomeToWork {
 	static void fStormOrBFall() throws Exception {
 		while (true) {
 			inCharSelect();
-			breakCycle = false;
+			System.out.println(++loginNumbers);
+			// TODO make char leave the items in the stash every 50 logins
 			// inTownAndOutsideAct1ToTSF();
 			// outside2ndTownFall();
-			// inTownAndOutsideAct3toTCS();
-			// outside3rdTownFall();
-			inTown4AndOutsideLakeFall();
-			outside4thTownFall();
+			inTownAndOutsideAct3toTCS();
+			outside3rdTownFall();
+			// inTown4AndOutsideLakeFall();
+			// outside4thTownFall();
 
 		}
 
@@ -141,9 +147,9 @@ public class BotHomeToWork {
 
 	public static void fireFlicker() throws Exception {
 		while (true) {
-			
+
 			// inCharSelect();
-			breakCycle = false;
+			// breakCycle = false;//TODO to be removed
 			// inTownAndOutsideImprLakeFlicker();
 			outside4thTownFlicker();
 		}
@@ -162,21 +168,30 @@ public class BotHomeToWork {
 
 	private static void logoutIfNotInCharSelect() throws Exception {
 		// if health ball is present - you are not in char select => logout again
+		// check 2 pixels 50 & 80 - if they are gray = char is dead - logout
+		// if not - proceed by setting breakCycle to false
 		Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
 				ballHealthPixelColorLocation80.y);
-			if (color80.getRGB() == ballHealthColor80) {
-				globalLogout();
-				r.delay(7000);
-			} 
-		
+		Color color = r.getPixelColor(ballHealthPixelColorLocation.x,
+				ballHealthPixelColorLocation.y);
+		if (color80.getRGB() == ballHealthColor80
+				|| (color80.getRGB() == ballHealthColor80Dead
+						&& color.getRGB() == ballHealthColorDead)) {
+			globalLogout();
+			r.delay(7000);
+		} else {
+			breakCycle = false;
+		}
+
 	}
 
-	private static void whenInLoadingScreenWait() throws Exception{
-		Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
-				ballHealthPixelColorLocation80.y);
+	private static void whenInLoadingScreenWait() throws Exception {
+
 		boolean flag = true;
 		while (flag) {
-			//no health ball present => we are in loading screen
+			Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
+					ballHealthPixelColorLocation80.y);
+			// no health ball present => we are in loading screen
 			if (color80.getRGB() != ballHealthColor80) {
 				r.delay(1000);
 			} else {
@@ -320,25 +335,27 @@ public class BotHomeToWork {
 			} else if (temp < 4) {
 				instaClickAndMoveWith2SDelay(100, 100);
 			}
-			checkIfHealthIsLow();
 
-			castTotemAtSelf();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			castTotemAtSelf();
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(100);
+			breakCycle = checkHealthAndCastTotems();
+
+			// checkIfHealthIsLow();
+			// castTotemAtSelf();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// castTotemAtSelf();
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(100);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
@@ -347,6 +364,56 @@ public class BotHomeToWork {
 				break;
 			}
 		}
+	}
+
+	private static boolean checkHealthAndCastTotems() throws Exception {
+
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		castTotemAtSelf();
+		r.delay(1000);
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		checkIfHealthIsLow();
+		ifNiceItemFound();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		castTotemAtSelf();
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(1000);
+		checkIfHealthIsLow();
+		ifNiceItemFound();
+		if (breakCycle == true) {
+			return true;
+		}
+		r.delay(100);
+		return breakCycle;
+
 	}
 
 	private static void outside3rdTownFall() throws Exception {
@@ -362,6 +429,7 @@ public class BotHomeToWork {
 			// hold mouse click near char and check if he is stuck
 
 			r.delay(200);
+			ifNiceItemFound();
 			// TODO checkIfCharHasMoved(); // bool check 4-5 colors if they have
 			// changed
 			// 1 time guaranteed top and left + right every other
@@ -377,33 +445,33 @@ public class BotHomeToWork {
 			} else if (temp < 9) {
 				instaClickAndMoveWith2SDelay(100, 100);
 			}
-			checkIfHealthIsLow();
 
-			// TODO sometimes totem is not cast when char is inside a
-			// no collision building
-			ifNiceItemFound();
-			castTotemAtSelf();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			ifNiceItemFound();
-			castTotemAtSelf();
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(1000);
-			checkIfHealthIsLow();
-			r.delay(100);
+			breakCycle = checkHealthAndCastTotems();
+
+			// checkIfHealthIsLow();
+			// ifNiceItemFound();
+			// castTotemAtSelf();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// ifNiceItemFound();
+			// castTotemAtSelf();
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(100);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 150000) {
+			if (estimatedTime > 180000) {
 				globalLogout();
 				break;
 			}
@@ -457,10 +525,10 @@ public class BotHomeToWork {
 				// instaClickAndMoveWith1SDelay(bot.x, bot.y);
 				instaClickAndMoveWith2SDelay(500, 720);
 			}
-			checkIfHealthIsLow();
-
 			// TODO sometimes totem is not cast when char is inside a
 			// no collision building
+
+			checkIfHealthIsLow();
 			ifNiceItemFound();
 			castTotemAtSelf();
 			r.delay(1000);
@@ -575,6 +643,7 @@ public class BotHomeToWork {
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.delay(40);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		r.delay(3000);
 		whenInLoadingScreenWait();
 		r.delay(timeAfterEnteringInstanceMS);
 	}
@@ -680,8 +749,12 @@ public class BotHomeToWork {
 			// lowHealth = true;
 			// ifPotionEmptyLogout();
 			useHealthPotion();
+			r.delay(102);
 			useHealthPotion2();
 			globalLogout();
+			// TODO - CONTINUES TO CLICK
+			// in gllogout boolean is set to true, but still this does not
+			// terminate the loop and esc is pressed in char select
 
 		}
 	}
@@ -705,12 +778,12 @@ public class BotHomeToWork {
 		r.keyRelease(KeyEvent.VK_ESCAPE);
 		instaMoveMouse(logout.x, logout.y);
 		breakCycle = true;
-		useHealthPotion2();
+		// useHealthPotion2(); can't drink pot with esc menu up
 		r.delay(randomDelay);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.delay(150);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		// r.delay(10000);
+		r.delay(1500);
 	}
 
 	private static void useHealthPotion() {
@@ -718,6 +791,7 @@ public class BotHomeToWork {
 		r.keyPress(KeyEvent.VK_1);
 		r.delay(100);
 		r.keyRelease(KeyEvent.VK_1);
+		r.delay(100);
 
 	}
 
@@ -726,6 +800,7 @@ public class BotHomeToWork {
 		r.keyPress(KeyEvent.VK_2);
 		r.delay(100);
 		r.keyRelease(KeyEvent.VK_2);
+		r.delay(100);
 
 	}
 
@@ -734,6 +809,7 @@ public class BotHomeToWork {
 		r.keyPress(KeyEvent.VK_3);
 		r.delay(100);
 		r.keyRelease(KeyEvent.VK_3);
+		r.delay(100);
 	}
 
 	private static void instaMoveMouse(int x, int y) {
