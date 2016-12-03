@@ -45,6 +45,7 @@ public class BotHomeToWork {
 	private static int loginNumbers;
 	private static int ballHealthColorDead;
 	private static int ballHealthColor80Dead;
+	private static Point town2ThirdMoveGardens;
 
 	// not using flask color now
 
@@ -98,6 +99,7 @@ public class BotHomeToWork {
 		town2FirstMove = new Point(696, 593);
 		town2SecondMove = new Point(696, 593);
 		town2ThirdMove = new Point(335, 305);
+		town2ThirdMoveGardens = new Point(145, 185);
 
 		clickSelf = new Point(525, 340);
 		clickNextToSelf = new Point(500, 340);
@@ -136,10 +138,10 @@ public class BotHomeToWork {
 			// TODO make char leave the items in the stash every 50 logins
 			// inTownAndOutsideAct1ToTSF();
 			// outside2ndTownFall();
-//			inTownAndOutsideAct3toTCS();
-//			outside3rdTownFall();
-			 inTown4AndOutsideLakeFall();
-			 outside4thTownFall();
+			 inTownAndOutsideAct3toTCS();
+			 outside3rdTownFall();
+//			inTown4AndOutsideLakeFall();
+//			outside4thTownFall();
 
 		}
 
@@ -156,6 +158,7 @@ public class BotHomeToWork {
 	}
 
 	private static void inCharSelect() throws Exception {
+		// something must have clicked during char select
 		r.delay(7000);
 		logoutIfNotInCharSelect();
 		r.keyPress(KeyEvent.VK_ENTER);
@@ -167,7 +170,8 @@ public class BotHomeToWork {
 	}
 
 	private static void logoutIfNotInCharSelect() throws Exception {
-		// if health ball is present - you are not in char select => logout again
+		// if health ball is present - you are not in char select => logout
+		// again
 		// check 2 pixels 50 & 80 - if they are gray = char is dead - logout
 		// if not - proceed by setting breakCycle to false
 		Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
@@ -186,8 +190,8 @@ public class BotHomeToWork {
 	}
 
 	private static void whenInLoadingScreenWait() throws Exception {
+		r.delay(3000);
 		long startTime = System.currentTimeMillis();
-		
 		boolean flag = true;
 		while (flag) {
 			long estimatedTime = System.currentTimeMillis() - startTime;
@@ -195,10 +199,14 @@ public class BotHomeToWork {
 				globalLogout();
 				break;
 			}
+			System.out.println(System.currentTimeMillis());
 			Color color80 = r.getPixelColor(ballHealthPixelColorLocation80.x,
 					ballHealthPixelColorLocation80.y);
+			Color color = r.getPixelColor(ballHealthPixelColorLocation.x,
+					ballHealthPixelColorLocation.y);
 			// no health ball present => we are in loading screen
-			if (color80.getRGB() != ballHealthColor80) {
+			if (color80.getRGB() != ballHealthColor80
+					&& color.getRGB() != ballHealthColor) {
 				r.delay(1000);
 			} else {
 				flag = false;
@@ -280,9 +288,13 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 100000) {
-				globalLogout();
-				break;
+			if (estimatedTime > 200000) {
+				if(breakCycle == false){
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
 			}
 		}
 	}
@@ -310,7 +322,16 @@ public class BotHomeToWork {
 		levelUpGems();
 		instaClickAndMoveWith2SDelay(100, 100);
 		instaClickAndMoveWith2SDelay(100, 100);
+	}
+	
+	static void inTownAndOutsideAct3toGardens() throws Exception {
+		moveVariationInTown3toGardens();
+		castCursesAndGolem();
+		r.delay(1000);
 
+		levelUpGems();
+		instaClickAndMoveWith2SDelay(100, 100);
+		instaClickAndMoveWith2SDelay(100, 100);
 	}
 
 	private static void outside2ndTownFall() throws Exception {
@@ -365,9 +386,13 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 100000) {
-				globalLogout();
-				break;
+			if (estimatedTime > 200000) {
+				if(breakCycle == false){
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
 			}
 		}
 	}
@@ -385,8 +410,8 @@ public class BotHomeToWork {
 			return true;
 		}
 		r.delay(1000);
-		checkIfHealthIsLow();
 		ifNiceItemFound();
+		checkIfHealthIsLow();
 		if (breakCycle == true) {
 			return true;
 		}
@@ -412,13 +437,13 @@ public class BotHomeToWork {
 			return true;
 		}
 		r.delay(1000);
-		checkIfHealthIsLow();
 		ifNiceItemFound();
+		checkIfHealthIsLow();
 		if (breakCycle == true) {
 			return true;
 		}
 		r.delay(100);
-		return breakCycle;
+		return false;
 
 	}
 
@@ -477,9 +502,13 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 180000) {
-				globalLogout();
-				break;
+			if (estimatedTime > 200000) {
+				if(breakCycle == false){
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
 			}
 		}
 	}
@@ -534,34 +563,37 @@ public class BotHomeToWork {
 			// no collision building
 
 			breakCycle = checkHealthAndCastTotems();
-//			checkIfHealthIsLow();
-//			ifNiceItemFound();
-//			castTotemAtSelf();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			ifNiceItemFound();
-//			castTotemAtSelf();
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(1000);
-//			checkIfHealthIsLow();
-//			r.delay(100);
+			// checkIfHealthIsLow();
+			// ifNiceItemFound();
+			// castTotemAtSelf();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// ifNiceItemFound();
+			// castTotemAtSelf();
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(1000);
+			// checkIfHealthIsLow();
+			// r.delay(100);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
-
 			if (estimatedTime > 200000) {
-				globalLogout();
-				break;
+				if(breakCycle == false){
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
 			}
 		}
 	}
@@ -624,6 +656,21 @@ public class BotHomeToWork {
 		goingToTheInstanceButton();
 
 	}
+	
+	private static void moveVariationInTown3toGardens() throws Exception {
+		// r.delay(6000);
+		// first step after login
+		instaClickAndMoveWith1SDelay(town2FirstMove.x, town2FirstMove.y);
+		instaClickAndMoveWith1SDelay(town2SecondMove.x, town2SecondMove.y);
+		r.keyPress(KeyEvent.VK_CONTROL);
+		instaClickAndMoveWith1SDelay(town2ThirdMoveGardens.x, town2ThirdMoveGardens.y);
+		r.delay(60);
+		r.keyRelease(KeyEvent.VK_CONTROL);
+		r.delay(150);
+		goingToTheInstanceButton();
+
+	}
+
 
 	private static void moveVariationInTown1toTSF() throws Exception {
 		// r.delay(6000);
@@ -649,7 +696,6 @@ public class BotHomeToWork {
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.delay(40);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		r.delay(3000);
 		whenInLoadingScreenWait();
 		r.delay(timeAfterEnteringInstanceMS);
 	}
@@ -667,12 +713,16 @@ public class BotHomeToWork {
 			for (int p = 0; p < image.getHeight(); p++) {
 				if (found) {
 					break;
+					
 				}
 				// //work ballHealth detecting as item
 				// //XXX check if problems at h
 				// if(i >135 && i < 157 && p > 1045 && p < 1063 ){
 				// continue;
 				// }
+				if (i > 935 && i < 955 && p > 660 && p < 685) {
+					continue;
+				}
 				if (image.getRGB(i, p) == -394503 || image.getRGB(i, p) == -3629439) {
 					// there is an exalt here // or an alchemy
 					point = new Point(i + 5, p + 5);
@@ -758,15 +808,12 @@ public class BotHomeToWork {
 			r.delay(102);
 			useHealthPotion2();
 			globalLogout();
-			// TODO - CONTINUES TO CLICK
-			// in gllogout boolean is set to true, but still this does not
-			// terminate the loop and esc is pressed in char select
 
 		}
 	}
 
 	private static void ifPotionEmptyLogout() throws Exception {
-		// TODO not same color as lvl 60 flask color
+		// not same color as lvl 60 flask color
 		Color color = r.getPixelColor(lastCharge1stFlaskLocation.x,
 				lastCharge1stFlaskLocation.y);
 		if (color.getRGB() != lastChargeFlaskColor) {

@@ -20,12 +20,13 @@ public class AndYetAnotherLocationTest {
 		//java.awt.Color[r=40,g=29,b=29]
 		//-13884117
 		//java.awt.Color[r=44,g=37,b=43]
-
+//		(935, 660);.
+//		(955, 685);
 	}
 	
 	public static void testSinglePosition(Robot r){
 		r.delay(1000);
-		Point p = new Point(130, 695);
+		Point p = new Point(145, 185);
 		r.mouseMove(p.x, p.y);
 		
 		Color color = r.getPixelColor(p.x, p.y);
