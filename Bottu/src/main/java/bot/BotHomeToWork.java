@@ -138,11 +138,14 @@ public class BotHomeToWork {
 			// TODO make char leave the items in the stash every 50 logins
 			// inTownAndOutsideAct1ToTSF();
 			// outside2ndTownFall();
-			 inTownAndOutsideAct3toTCS();
-			 outside3rdTownFall();
-//			inTown4AndOutsideLakeFall();
-//			outside4thTownFall();
-
+			//inTownAndOutsideAct3toTCS();
+			//outside3rdTownFall();
+			// inTownAndOutsideAct3toGardens();
+			// outside3rdTownGardensFrostNova();
+			// inTown4AndOutsideLakeFall();
+			// outside4thTownFall();
+			inTown4AndOutsideLakeFall();
+			outside4thTownFrostNova();
 		}
 
 	}
@@ -151,7 +154,6 @@ public class BotHomeToWork {
 		while (true) {
 
 			// inCharSelect();
-			// breakCycle = false;//TODO to be removed
 			// inTownAndOutsideImprLakeFlicker();
 			outside4thTownFlicker();
 		}
@@ -267,7 +269,7 @@ public class BotHomeToWork {
 				instaClickAndMoveWith1SDelay(bot.x, bot.y);
 			}
 			checkIfHealthIsLow();
-			int temp = ra.nextInt(2);
+			int temp = ra.nextInt(3);
 			if (temp == 0) {
 				instaClickAndMoveWith1SDelay(left.x, left.y);
 			} else
@@ -289,7 +291,7 @@ public class BotHomeToWork {
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
 			if (estimatedTime > 200000) {
-				if(breakCycle == false){
+				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
 					globalLogout();
@@ -323,15 +325,19 @@ public class BotHomeToWork {
 		instaClickAndMoveWith2SDelay(100, 100);
 		instaClickAndMoveWith2SDelay(100, 100);
 	}
-	
+
 	static void inTownAndOutsideAct3toGardens() throws Exception {
 		moveVariationInTown3toGardens();
 		castCursesAndGolem();
 		r.delay(1000);
 
-		levelUpGems();
-		instaClickAndMoveWith2SDelay(100, 100);
-		instaClickAndMoveWith2SDelay(100, 100);
+//		levelUpGems();
+		instaClickAndMoveWith2SDelay(bot.x, 700);
+		instaClickAndMoveWith2SDelay(800, 580);
+		instaClickAndMoveWith2SDelay(800, 580);
+		instaClickAndMoveWith2SDelay(800, 580);
+		instaClickAndMoveWith2SDelay(800, 580);
+		instaClickAndMoveWith2SDelay(800, 580);
 	}
 
 	private static void outside2ndTownFall() throws Exception {
@@ -387,7 +393,7 @@ public class BotHomeToWork {
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
 			if (estimatedTime > 200000) {
-				if(breakCycle == false){
+				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
 					globalLogout();
@@ -442,6 +448,61 @@ public class BotHomeToWork {
 		if (breakCycle == true) {
 			return true;
 		}
+		r.delay(100);
+		return false;
+
+	}
+	
+	private static boolean checkHealthAndCastSpells() throws Exception {
+
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		castDecoyTotemAtSelf();
+		cast5SpellsAtCenter();
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+		castDecoyTotemAtSelf();
+		cast5SpellsAtCenter();
+		ifNiceItemFound();
+		checkIfHealthIsLow();
+		if (breakCycle == true) {
+			return true;
+		}
+//		castDecoyTotemAtSelf();
+//		cast3SpellsAtCenter();	
+//		checkIfHealthIsLow();
+//		if (breakCycle == true) {
+//			return true;
+//		}
+//		castDecoyTotemAtSelf();
+//		cast3SpellsAtCenter();
+//		checkIfHealthIsLow();
+//		if (breakCycle == true) {
+//			return true;
+//		}
+//		castDecoyTotemAtSelf();
+//		cast3SpellsAtCenter();
+//		checkIfHealthIsLow();
+//		if (breakCycle == true) {
+//			return true;
+//		}
+//		castDecoyTotemAtSelf();
+//		cast3SpellsAtCenter();
+//		checkIfHealthIsLow();
+//		if (breakCycle == true) {
+//			return true;
+//		}
+//		castDecoyTotemAtSelf();
+//		cast3SpellsAtCenter();
+//		ifNiceItemFound();
+//		checkIfHealthIsLow();
+//		if (breakCycle == true) {
+//			return true;
+//		}
 		r.delay(100);
 		return false;
 
@@ -503,7 +564,92 @@ public class BotHomeToWork {
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
 			if (estimatedTime > 200000) {
-				if(breakCycle == false){
+				if (breakCycle == false) {
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
+			}
+		}
+	}
+	
+	private static void outside3rdTownGardensFrostNova() throws Exception {
+
+		// r.delay(2000);
+
+		long startTime = System.currentTimeMillis();
+		int moves = 0;
+		while (true) {
+			if (breakCycle) {
+				break;
+			}
+			ifNiceItemFound();
+			// hold mouse click near char and check if he is stuck
+
+			r.delay(200);
+			ifNiceItemFound();
+			if(moves < 15){
+				instaClickAndMoveWith2SDelay(800, 580);
+				++moves;
+			} else if(moves >= 15 && moves <= 30){
+				instaClickAndMoveWith2SDelay(800, 100);
+				++moves;
+			} else if(moves > 30){
+				// reached the gate - relog
+				break;
+			}
+
+			breakCycle = checkHealthAndCastSpells();
+
+
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			// if the time in the instance is more than 2 min - relog
+			if (estimatedTime > 200000) {
+				if (breakCycle == false) {
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
+			}
+		}
+	}
+	
+	private static void outside4thTownFrostNova() throws Exception {
+
+		// r.delay(2000);
+
+		long startTime = System.currentTimeMillis();
+		while (true) {
+			if (breakCycle) {
+				break;
+			}
+			ifNiceItemFound();
+			// hold mouse click near char and check if he is stuck
+
+			r.delay(200);
+			ifNiceItemFound();
+			int temp = ra.nextInt(3);
+			if (temp == 0) {
+				// instaClickAndMoveWith1SDelay(right.x, right.y);
+				instaClickAndMoveWith2SDelay(950, 550);
+			} else if (temp == 1) {
+				// instaClickAndMoveWith1SDelay(bot.x, bot.y);
+				instaClickAndMoveWith2SDelay(500, 720);
+			} else {
+				if (temp == 2) {
+					instaClickAndMoveWith2SDelay(right.x, right.y);
+				}
+			}
+
+			breakCycle = checkHealthAndCastSpells();
+
+
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			// if the time in the instance is more than 2 min - relog
+			if (estimatedTime > 200000) {
+				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
 					globalLogout();
@@ -551,7 +697,7 @@ public class BotHomeToWork {
 			// if (ra.nextBoolean()) {
 			// instaClickAndMoveWith1SDelay(1800,200);
 			// }
-			int temp = ra.nextInt(2);
+			int temp = ra.nextInt(3);
 			if (temp == 0) {
 				// instaClickAndMoveWith1SDelay(right.x, right.y);
 				instaClickAndMoveWith2SDelay(950, 550);
@@ -588,7 +734,7 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			if (estimatedTime > 200000) {
-				if(breakCycle == false){
+				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
 					globalLogout();
@@ -616,16 +762,48 @@ public class BotHomeToWork {
 		r.mousePress(InputEvent.BUTTON3_MASK);
 		r.delay(20);
 		r.mouseRelease(InputEvent.BUTTON3_MASK);
-		r.delay(600);
+		r.delay(500);
 		r.mousePress(InputEvent.BUTTON3_MASK);
 		r.delay(20);
 		r.mouseRelease(InputEvent.BUTTON3_MASK);
-		r.delay(600);
+		r.delay(500);
 		r.mousePress(InputEvent.BUTTON3_MASK);
 		r.delay(20);
 		r.mouseRelease(InputEvent.BUTTON3_MASK);
 		r.delay(100);
 
+	}
+	private static void cast5SpellsAtCenter() {
+		instaMoveMouse(clickSelf.x, clickSelf.y);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(500);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(500);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(500);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(500);
+		r.mousePress(InputEvent.BUTTON3_MASK);
+		r.delay(20);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
+		r.delay(100);
+
+	}
+	
+	private static void castDecoyTotemAtSelf() {
+		r.delay(200);
+		instaMoveMouse(clickSelf.x, clickSelf.y);
+		r.keyPress(KeyEvent.VK_E);
+		r.delay(20);
+		r.keyRelease(KeyEvent.VK_E);
 	}
 
 	private static void levelUpGems() {
@@ -656,7 +834,7 @@ public class BotHomeToWork {
 		goingToTheInstanceButton();
 
 	}
-	
+
 	private static void moveVariationInTown3toGardens() throws Exception {
 		// r.delay(6000);
 		// first step after login
@@ -670,7 +848,6 @@ public class BotHomeToWork {
 		goingToTheInstanceButton();
 
 	}
-
 
 	private static void moveVariationInTown1toTSF() throws Exception {
 		// r.delay(6000);
@@ -713,7 +890,7 @@ public class BotHomeToWork {
 			for (int p = 0; p < image.getHeight(); p++) {
 				if (found) {
 					break;
-					
+
 				}
 				// //work ballHealth detecting as item
 				// //XXX check if problems at h
@@ -773,12 +950,12 @@ public class BotHomeToWork {
 		r.keyPress(KeyEvent.VK_R);
 		r.delay(40);
 		r.keyRelease(KeyEvent.VK_R);
-		r.delay(1000);
+		r.delay(1500);
 
 		r.keyPress(KeyEvent.VK_T);
 		r.delay(40);
 		r.keyRelease(KeyEvent.VK_T);
-		r.delay(1000);
+		r.delay(1500);
 
 		r.keyPress(KeyEvent.VK_Q);
 		r.delay(40);
