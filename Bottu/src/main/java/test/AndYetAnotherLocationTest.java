@@ -11,9 +11,6 @@ public class AndYetAnotherLocationTest {
 
 	public static void main(String[] args) throws Exception {
 		Robot robot = new Robot();
-		
-		
-		
 		testSinglePosition(robot);
 //		test4Positions(robot);
 		// 80 gray -14148323
@@ -22,13 +19,15 @@ public class AndYetAnotherLocationTest {
 		//java.awt.Color[r=44,g=37,b=43]
 //		(935, 660);.
 //		(955, 685);
+		
+		//-4028666
 	}
 	
 	public static void testSinglePosition(Robot r){
 		r.delay(1000);
-		Point p = new Point(800, 100);
+		Point p = new Point(870,610);
 		r.mouseMove(p.x, p.y);
-		
+		r.delay(250);
 		Color color = r.getPixelColor(p.x, p.y);
 		
 		System.out.println(color.getRGB());
