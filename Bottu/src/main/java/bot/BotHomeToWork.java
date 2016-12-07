@@ -1260,7 +1260,7 @@ public class BotHomeToWork {
 	}
 
 	private static void globalLogout() throws Exception {
-		int randomDelay = ra.nextInt(250 - 150 + 1) + 150;
+		int randomDelay = ra.nextInt(25 - 15 + 1) + 15;
 		// r.delay(randomDelay);
 		r.keyPress(KeyEvent.VK_ESCAPE);
 		r.delay(20);
