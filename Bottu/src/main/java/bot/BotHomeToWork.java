@@ -163,10 +163,10 @@ public class BotHomeToWork {
 			// outside4thTownFrostNova();
 			// inTown4AndOutsideAquaFall();
 			// outside4thTownAquaFrostNova();
-//			inTown4AndOutsideAquaFall();
-//			outside4thTownAquaFlicker();
-			inTown4AndOutsideLake3CurseFlicker();
-			outside4thTownFlicker();
+			inTown4AndOutsideAquaFall();
+			outside4thTownAquaFlicker();
+//			inTown4AndOutsideLake3CurseFlicker();
+//			outside4thTownFlicker();
 
 		}
 
@@ -267,15 +267,17 @@ public class BotHomeToWork {
 			ifNiceItemFound(true);
 
 			r.mousePress(InputEvent.BUTTON3_MASK);
-			r.delay(200);
-			emergency3rdPotDrinkMana();
-			drinkPots4and5();
+			r.delay(20);
+			drinkPots345();
 			// 1 time guaranteed right and every other - 1 bot
 			instaClickAndMoveWith1SDelay(right.x, right.y);
 			testPosition(right.x, right.y);
+			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
 			if (ra.nextBoolean()) {
 				instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
+				instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
 			}
+			//350 - 74
 			breakCycle = checkHealthWhileFlickering();
 			// int temp = ra.nextInt(3);
 			// if (temp == 0) {
@@ -292,7 +294,7 @@ public class BotHomeToWork {
 			// }
 
 			// checkIfHealthIsLow();
-			r.delay(100);
+			r.delay(15);
 
 			r.mouseRelease(InputEvent.BUTTON3_MASK);
 
@@ -743,14 +745,14 @@ public class BotHomeToWork {
 			ifNiceItemFound(true);
 
 			r.mousePress(InputEvent.BUTTON3_MASK);
-			r.delay(200);
-			emergency3rdPotDrinkMana();
-			drinkPots4and5();
+			r.delay(20);
+			drinkPots345();
 			instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
 			testPosition(lowerRight.x, lowerRight.y);
-
+			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+			
 			breakCycle = checkHealthWhileFlickering();
-			r.delay(300);
+			r.delay(30);
 
 			r.mouseRelease(InputEvent.BUTTON3_MASK);
 
@@ -765,6 +767,8 @@ public class BotHomeToWork {
 			}
 		}
 	}
+
+
 
 	public static void inTown4AndOutsideLakeFall() throws Exception {
 		originalMoveVariationInTown4CTRLPressed();
@@ -799,6 +803,7 @@ public class BotHomeToWork {
 		instaClickAndMoveWith1SDelay(right.x, right.y);
 		instaClickAndMoveWith1SDelay(right.x, right.y);
 		instaClickAndMoveWith1SDelay(right.x, right.y);
+		r.mouseRelease(InputEvent.BUTTON3_MASK);
 
 	}
 
@@ -822,10 +827,8 @@ public class BotHomeToWork {
 		instaClickAndMoveWith2SDelay(1000, 370);
 		instaClickAndMoveWith2SDelay(980, 120);
 		instaMoveMouse(clickSelf.x, clickSelf.y);
-		// r.mousePress(InputEvent.BUTTON3_MASK);
-		// r.delay(20);
-		// r.mouseRelease(InputEvent.BUTTON3_MASK);
-		// r.delay(1000);
+		 r.mouseRelease(InputEvent.BUTTON3_MASK);
+		 r.delay(1000);
 
 	}
 
@@ -1307,6 +1310,20 @@ public class BotHomeToWork {
 		r.keyRelease(KeyEvent.VK_5);
 		r.delay(100);
 
+	}
+	
+	private static void drinkPots345() {
+		r.delay(20);
+		r.keyPress(KeyEvent.VK_3);
+		r.keyPress(KeyEvent.VK_4);
+		r.keyPress(KeyEvent.VK_5);
+		r.delay(100);
+		r.keyRelease(KeyEvent.VK_3);
+		r.keyRelease(KeyEvent.VK_4);
+		r.keyRelease(KeyEvent.VK_5);
+		r.delay(100);
+
+		
 	}
 
 	private static void instaMoveMouse(int x, int y) {
