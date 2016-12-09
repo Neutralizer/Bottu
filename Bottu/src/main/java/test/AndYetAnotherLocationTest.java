@@ -25,7 +25,7 @@ public class AndYetAnotherLocationTest {
 	
 	public static void testSinglePosition(Robot r){
 		r.delay(1000);
-		Point p = new Point(980,120);
+		Point p = new Point(800, 335);
 		r.mouseMove(p.x, p.y);
 		r.delay(250);
 		Color color = r.getPixelColor(p.x, p.y);

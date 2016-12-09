@@ -3,7 +3,6 @@ package bot;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.util.Random;
 
 public class BotHomeToWork {
@@ -42,7 +41,7 @@ public class BotHomeToWork {
 	private static Point town3SecondMove;
 	private static Point town3ThirdMove;
 	private static int[] pixelColorsCheck; // not used
-	private static int loginNumbers;
+	private static int loginCounter;
 	private static int ballHealthColorDead;
 	private static int ballHealthColor80Dead;
 	private static Point town3ThirdMoveGardens;
@@ -52,6 +51,10 @@ public class BotHomeToWork {
 	private static Point town4SecondMoveAqua;
 	private static Point town4ClickingDoorAqua;
 	private static Point lowerRight;
+	private static int loginStashTriggerNumber;
+	private static Point stashLocationTown3;
+	private static Point stashLocationTown4;
+	private static Point inventoryStartLocation;
 
 	// not using flask color now
 
@@ -109,7 +112,7 @@ public class BotHomeToWork {
 		town4SecondMoveAqua = new Point(950, 365);
 		town4ClickingDoorAqua = new Point(760, 340);
 
-		newInstance = new Point(190, 230);
+		newInstance = new Point(180, 240);
 		levelUpGemsLocation = new Point(980, 220);
 		levelUpGemsColor = -4028666;
 
@@ -128,14 +131,20 @@ public class BotHomeToWork {
 		lastChargeFlaskColor = -11399167;
 		timeAfterEnteringInstanceMS = 5000;
 		timeAfterLoggingInMS = 5000;
+		stashLocationTown3 = new Point(110,350);
+		stashLocationTown4 = new Point(455,40);
+		inventoryStartLocation = new Point(581,436);
 		pixelColorsCheck = new int[] { 1, 2, 3, 4 };
 
 		left = new Point(200, 300);
-		right = new Point(800, 302);
+//		right = new Point(800, 302);//DeressoBanana right
+		right = new Point(800, 335);//Bomber right
 		top = new Point(502, 110);
 		bot = new Point(501, 500);
 		lowerRight = new Point(870,610);
-		loginNumbers = 0;
+		loginCounter = 0;
+		loginStashTriggerNumber = 20;
+		
 		run();
 
 	}
@@ -145,12 +154,21 @@ public class BotHomeToWork {
 		fStormOrBFall();
 
 	}
+	
 
 	static void fStormOrBFall() throws Exception {
 		while (true) {
 			inCharSelect();
-			System.out.println(++loginNumbers);
-			// TODO make char leave the items in the stash every 50 logins
+			System.out.println(++loginCounter);
+			if (loginCounter % loginStashTriggerNumber == 0) {
+				//leave items in stash town number and logout
+				moveToLeaveItemsInStash(4);
+				continue;
+			}
+			// if (checkIfCharIsInLoginScreen()){
+			// //click login button
+			// continue;
+			// }
 			// inTownAndOutsideAct1ToTSF();
 			// outside2ndTownFall();
 			// inTownAndOutsideAct3toTCS();
@@ -163,10 +181,11 @@ public class BotHomeToWork {
 			// outside4thTownFrostNova();
 			// inTown4AndOutsideAquaFall();
 			// outside4thTownAquaFrostNova();
-			inTown4AndOutsideAquaFall();
-			outside4thTownAquaFlicker();
-//			inTown4AndOutsideLake3CurseFlicker();
-//			outside4thTownFlicker();
+//			inTown4AndOutsideAquaFall();
+//			outside4thTownAquaFlicker();
+			
+			inTown4AndOutsideLake3CurseFlicker();
+			outside4thTownFlicker();
 
 		}
 
@@ -191,6 +210,60 @@ public class BotHomeToWork {
 		whenInLoadingScreenWait();
 		r.delay(timeAfterLoggingInMS);
 
+	}
+	
+	private static void moveToLeaveItemsInStash(int townNumber) throws Exception {
+		//point to stash town 3 and 4
+		//ctrl click on inventory
+		//logout must be 100% - outside of town_ifs
+		
+		
+		if(townNumber == 4){
+			instaClickAndMoveWith2SDelay(stashLocationTown4.x, stashLocationTown4.y);
+			r.delay(5000);
+			
+			putItemsInStash();
+
+		} else if (townNumber == 3) {
+			instaClickAndMoveWith2SDelay(stashLocationTown3.x, stashLocationTown3.y);
+			r.delay(5000);
+		}
+		
+		globalLogout();
+	}
+	
+	private static void putItemsInStash() {
+		Point inventory = new Point(inventoryStartLocation.x,inventoryStartLocation.y);
+		instaMoveMouse(inventoryStartLocation.x,inventoryStartLocation.y);
+		r.delay(5000);
+		//37 pixels to the next cell
+		r.keyPress(KeyEvent.VK_CONTROL);
+		for(int y = 0; y < 5;y++){
+			for(int x = 0; x < 12;x++){
+				inventory = new Point(inventoryStartLocation.x + (x * 37)  
+						,inventoryStartLocation.y + (y * 37));
+				instaMoveMouse(inventory.x,inventory.y);
+				r.delay(40);
+				r.mousePress(InputEvent.BUTTON1_MASK);
+				r.mouseRelease(InputEvent.BUTTON1_MASK);
+				
+			}
+			r.delay(3000);
+		}
+		r.keyRelease(KeyEvent.VK_CONTROL);
+		r.delay(3000);
+		// close stash menu
+		r.keyPress(KeyEvent.VK_ESCAPE);
+		r.delay(20);
+		r.keyRelease(KeyEvent.VK_ESCAPE);
+		r.delay(2000);
+		
+	}
+
+	private static boolean checkIfCharIsInLoginScreen() {
+		// TODO Auto-generated method stub
+		//check 3-4-5 points to see if char is in login screen
+		return false;
 	}
 
 	private static void logoutIfNotInCharSelect() throws Exception {
@@ -971,22 +1044,10 @@ public class BotHomeToWork {
 			r.mousePress(InputEvent.BUTTON1_MASK);
 			r.delay(40);
 			r.mouseRelease(InputEvent.BUTTON1_MASK);
-			r.delay(40);
+			r.delay(120);
 		} else {
 			r.delay(150);
 		}
-		// TODO to be removed
-		// int temp = ra.nextInt(100);
-		// if (temp < 20) {
-		// instaMoveMouse(levelUpGemsLocation.x, levelUpGemsLocation.y);
-		// for (int i = 0; i < 10; i++) {
-		// r.delay(40);
-		// r.mousePress(InputEvent.BUTTON1_MASK);
-		// r.delay(40);
-		// r.mouseRelease(InputEvent.BUTTON1_MASK);
-		// r.delay(40);
-		// }
-		// }
 	}
 
 	private static void moveVariationInTown3toTCS() throws Exception {
@@ -1060,11 +1121,6 @@ public class BotHomeToWork {
 					break;
 
 				}
-				// //work ballHealth detecting as item
-				// //XXX check if problems at h
-				// if(i >135 && i < 157 && p > 1045 && p < 1063 ){
-				// continue;
-				// }
 				if (i > 935 && i < 955 && p > 660 && p < 685) {
 					continue;
 				}
@@ -1241,7 +1297,7 @@ public class BotHomeToWork {
 			// lowHealth = true;
 			// ifPotionEmptyLogout();
 			useHealthPotion();
-			r.delay(102);
+			r.delay(40);
 			useHealthPotion2();
 			globalLogout();
 
@@ -1356,6 +1412,8 @@ public class BotHomeToWork {
 	private static void testPosition(int x, int y) throws Exception {
 		Point p = MouseInfo.getPointerInfo().getLocation();
 		if (p.x != x || p.y != y) {
+			r.mousePress(InputEvent.BUTTON3_MASK);
+			r.mouseRelease(InputEvent.BUTTON3_MASK);
 			throw new Exception();
 		}
 
