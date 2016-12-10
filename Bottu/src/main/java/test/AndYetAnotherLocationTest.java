@@ -20,12 +20,12 @@ public class AndYetAnotherLocationTest {
 //		(935, 660);.
 //		(955, 685);
 		
-		//-4028666
+		//-16051178
 	}
 	
 	public static void testSinglePosition(Robot r){
 		r.delay(1000);
-		Point p = new Point(800, 335);
+		Point p = new Point(555, 480);
 		r.mouseMove(p.x, p.y);
 		r.delay(250);
 		Color color = r.getPixelColor(p.x, p.y);

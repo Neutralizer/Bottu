@@ -55,6 +55,12 @@ public class BotHomeToWork {
 	private static Point stashLocationTown3;
 	private static Point stashLocationTown4;
 	private static Point inventoryStartLocation;
+	private static Point loginScreenLogo;
+	private static Point loginButton;
+	private static int loginScreenLogoColor;
+	private static int loginButtonColor;
+	private static Point charSelectPixelColorLocation;
+	private static int charSelectColor;
 
 	// not using flask color now
 
@@ -121,9 +127,11 @@ public class BotHomeToWork {
 		clickNextToSelfLeft = new Point(460, 300);
 
 		logout = new Point(550, 336);
+		charSelectPixelColorLocation = new Point(555, 480);
 		ballHealthPixelColorLocation = new Point(85, 695); // 40% health left
 		ballHealthPixelColorLocation80 = new Point(85, 640); // 80% health left
 		lastCharge1stFlaskLocation = new Point(228, 748);
+		charSelectColor = -16051178;
 		ballHealthColor = -6479330;
 		ballHealthColor80 = -5627091;
 		ballHealthColorDead = -13685196;
@@ -134,6 +142,10 @@ public class BotHomeToWork {
 		stashLocationTown3 = new Point(110,350);
 		stashLocationTown4 = new Point(455,40);
 		inventoryStartLocation = new Point(581,436);
+		loginScreenLogo = new Point();
+		loginButton =  new Point();
+		loginScreenLogoColor = 0;
+		loginButtonColor = 0;
 		pixelColorsCheck = new int[] { 1, 2, 3, 4 };
 
 		left = new Point(200, 300);
@@ -165,6 +177,7 @@ public class BotHomeToWork {
 				moveToLeaveItemsInStash(4);
 				continue;
 			}
+			// waits in loading screen and then logouts after a time 
 			// if (checkIfCharIsInLoginScreen()){
 			// //click login button
 			// continue;
@@ -190,6 +203,38 @@ public class BotHomeToWork {
 		}
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public static void fireFlicker() throws Exception {
 		while (true) {
@@ -201,7 +246,24 @@ public class BotHomeToWork {
 	}
 
 	private static void inCharSelect() throws Exception {
-		// something must have clicked during char select
+		// until char select is not reached - wait
+		
+		long startTime = System.currentTimeMillis();
+		boolean flag = true;
+		while(flag){
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			if (estimatedTime > 80000) {
+				break;
+			}
+			//TODO nothing to break the cycle with except the flag// check 
+			Color color = r.getPixelColor(charSelectPixelColorLocation.x,
+					charSelectPixelColorLocation.y);
+			if(color.getRGB() != charSelectColor){
+				r.delay(1000);
+			} else {
+				flag = false;
+			}
+		}
 		r.delay(7000);
 		logoutIfNotInCharSelect();
 		r.keyPress(KeyEvent.VK_ENTER);
@@ -436,8 +498,6 @@ public class BotHomeToWork {
 			// hold mouse click near char and check if he is stuck
 
 			r.delay(200);
-			// TODO checkIfCharHasMoved(); // bool check 4-5 colors if they have
-			// changed
 			// 1 time guaranteed top and left + right every other
 			// instaClickAndMoveWith1SDelay(top.x, top.y);
 
@@ -628,8 +688,6 @@ public class BotHomeToWork {
 
 			r.delay(200);
 			ifNiceItemFound();
-			// TODO checkIfCharHasMoved(); // bool check 4-5 colors if they have
-			// changed
 			// 1 time guaranteed top and left + right every other
 			// instaClickAndMoveWith1SDelay(top.x, top.y);
 			// instaClickAndMoveWith1SDelay(left.x, left.y);
@@ -682,6 +740,47 @@ public class BotHomeToWork {
 
 	private static void outside3rdTownGardensFrostNova() throws Exception {
 
+		// r.delay(2000);
+
+		long startTime = System.currentTimeMillis();
+		int moves = 0;
+		while (true) {
+			if (breakCycle) {
+				break;
+			}
+			ifNiceItemFound();
+			// hold mouse click near char and check if he is stuck
+
+			r.delay(200);
+			ifNiceItemFound();
+			if (moves < 15) {
+				instaClickAndMoveWith2SDelay(800, 580);
+				++moves;
+			} else if (moves >= 15 && moves <= 30) {
+				instaClickAndMoveWith2SDelay(800, 100);
+				++moves;
+			} else if (moves > 30) {
+				// reached the gate - relog
+				break;
+			}
+
+			breakCycle = checkHealthAndCastSpells();
+
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			// if the time in the instance is more than 2 min - relog
+			if (estimatedTime > 200000) {
+				if (breakCycle == false) {
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
+			}
+		}
+	}
+	
+	private static void outside3rdTownGardensCharger() throws Exception {
+		//TODO 
 		// r.delay(2000);
 
 		long startTime = System.currentTimeMillis();
@@ -1112,11 +1211,11 @@ public class BotHomeToWork {
 		Point point = null;
 		boolean found = false;
 
-		for (int i = 0; i < image.getWidth(); i++) {
+		for (int i = 0; i < image.getWidth(); i+=5) {
 			if (found) {
 				break;
 			}
-			for (int p = 0; p < image.getHeight(); p++) {
+			for (int p = 0; p < image.getHeight(); p+=5) {
 				if (found) {
 					break;
 
@@ -1152,12 +1251,11 @@ public class BotHomeToWork {
 		BufferedImage image = r.createScreenCapture(scr);
 		Point point = null;
 		boolean found = false;
-
-		for (int i = 0; i < image.getWidth(); i++) {
+		for (int i = 0; i < image.getWidth(); i+=5) {
 			if (found) {
 				break;
 			}
-			for (int p = 0; p < image.getHeight(); p++) {
+			for (int p = 0; p < image.getHeight(); p+=5) {
 				if (found) {
 					break;
 
