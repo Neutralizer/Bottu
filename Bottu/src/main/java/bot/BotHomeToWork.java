@@ -172,11 +172,11 @@ public class BotHomeToWork {
 		while (true) {
 			inCharSelect();
 			System.out.println(++loginCounter);
-			if (loginCounter % loginStashTriggerNumber == 0) {
-				//leave items in stash town number and logout
-				moveToLeaveItemsInStash(4);
-				continue;
-			}
+//			if (loginCounter % loginStashTriggerNumber == 0) {
+//				//leave items in stash town number and logout
+//				moveToLeaveItemsInStash(4);
+//				continue;
+//			}
 			// waits in loading screen and then logouts after a time 
 			// if (checkIfCharIsInLoginScreen()){
 			// //click login button
@@ -197,8 +197,11 @@ public class BotHomeToWork {
 //			inTown4AndOutsideAquaFall();
 //			outside4thTownAquaFlicker();
 			
-			inTown4AndOutsideLake3CurseFlicker();
-			outside4thTownFlicker();
+//			inTown4AndOutsideLake3CurseFlicker();
+//			outside4thTownFlicker();
+			
+			inTownAndOutsideAct3toGardens();
+			outside3rdTownGardensFlicker();
 
 		}
 
@@ -289,6 +292,8 @@ public class BotHomeToWork {
 		} else if (townNumber == 3) {
 			instaClickAndMoveWith2SDelay(stashLocationTown3.x, stashLocationTown3.y);
 			r.delay(5000);
+			
+			putItemsInStash();
 		}
 		
 		globalLogout();
@@ -405,12 +410,14 @@ public class BotHomeToWork {
 			r.delay(20);
 			drinkPots345();
 			// 1 time guaranteed right and every other - 1 bot
-			instaClickAndMoveWith1SDelay(right.x, right.y);
-			testPosition(right.x, right.y);
-			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+//			instaClickAndMoveWith1SDelay(right.x, right.y);
+//			testPosition(right.x, right.y);
+//			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+			instaClickAndMoveWith1SDelayCenterCursor(right.x, right.y);
 			if (ra.nextBoolean()) {
-				instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
-				instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+//				instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
+//				instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+				instaClickAndMoveWith1SDelayCenterCursor(lowerRight.x, lowerRight.y);
 			}
 			//350 - 74
 			breakCycle = checkHealthWhileFlickering();
@@ -436,6 +443,64 @@ public class BotHomeToWork {
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
 			if (estimatedTime > 100000) {
+				if (breakCycle == false) {
+					// if it is true, then we have already logged out from the
+					// low health method
+					globalLogout();
+					break;
+				}
+			}
+		}
+	}
+	
+	private static void outside3rdTownGardensFlicker() throws Exception {
+
+		long startTime = System.currentTimeMillis();
+		while (true) {
+			if (breakCycle) {
+				break;
+			}
+			ifNiceItemFound(true);
+
+			r.mousePress(InputEvent.BUTTON3_MASK);
+			r.delay(20);
+			drinkPots345();
+			// 1 time guaranteed right and every other - 1 bot
+//			instaClickAndMoveWith1SDelay(right.x, right.y);
+//			testPosition(right.x, right.y);
+//			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+			
+			if (ra.nextBoolean()) {
+//				instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
+//				instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
+				instaClickAndMoveWith1SDelayCenterCursor(lowerRight.x, lowerRight.y);
+			} else {
+				instaClickAndMoveWith1SDelayCenterCursor(right.x, right.y);
+			}
+			//350 - 74
+			breakCycle = checkHealthWhileFlickering();
+			// int temp = ra.nextInt(3);
+			// if (temp == 0) {
+			// instaClickAndMoveWith1SDelay(left.x, left.y);
+			// } else
+			// if (temp == 1) {
+			// instaClickAndMoveWith1SDelay(right.x, right.y);
+			// } else
+			// if (temp == 1 || temp == 2) {
+			// instaClickAndMoveWith1SDelay(bot.x, bot.y);
+			// }
+			// else if (temp == 3) {
+			// instaClickAndMoveWith1SDelay(top.x, top.y);
+			// }
+
+			// checkIfHealthIsLow();
+			r.delay(15);
+
+			r.mouseRelease(InputEvent.BUTTON3_MASK);
+
+			long estimatedTime = System.currentTimeMillis() - startTime;
+			// if the time in the instance is more than 2 min - relog
+			if (estimatedTime > 40000) {
 				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
@@ -473,14 +538,11 @@ public class BotHomeToWork {
 
 	static void inTownAndOutsideAct3toGardens() throws Exception {
 		moveVariationInTown3toGardens();
-		castCursesAndGolem();
+		castCursesAndGolem(true);
 		r.delay(1000);
 
-		// levelUpGems();
+		levelUpGems();
 		instaClickAndMoveWith2SDelay(bot.x, 700);
-		instaClickAndMoveWith2SDelay(800, 580);
-		instaClickAndMoveWith2SDelay(800, 580);
-		instaClickAndMoveWith2SDelay(800, 580);
 		instaClickAndMoveWith2SDelay(800, 580);
 		instaClickAndMoveWith2SDelay(800, 580);
 	}
@@ -658,18 +720,18 @@ public class BotHomeToWork {
 		if (breakCycle == true) {
 			return true;
 		}
-		r.delay(300);
+		r.delay(30);
 		checkIfHealthIsLow();
 		if (breakCycle == true) {
 			return true;
 		}
-		r.delay(300);
+		r.delay(30);
 		// ifNiceItemFound(true);
 		checkIfHealthIsLow();
 		if (breakCycle == true) {
 			return true;
 		}
-		r.delay(100);
+		r.delay(10);
 		return false;
 
 	}
@@ -779,7 +841,7 @@ public class BotHomeToWork {
 		}
 	}
 	
-	private static void outside3rdTownGardensCharger() throws Exception {
+	private static void outside3rdTownGardensWarper() throws Exception {
 		//TODO 
 		// r.delay(2000);
 
@@ -966,7 +1028,6 @@ public class BotHomeToWork {
 
 		castCursesAndGolem(true);
 		levelUpGems();
-
 		r.mousePress(InputEvent.BUTTON3_MASK);
 		r.delay(20);
 
@@ -1147,13 +1208,17 @@ public class BotHomeToWork {
 		} else {
 			r.delay(150);
 		}
+		instaMoveMouse(clickSelf.x, clickSelf.y);
+		
 	}
 
 	private static void moveVariationInTown3toTCS() throws Exception {
 		// r.delay(6000);
 		// first step after login
 		instaClickAndMoveWith1SDelay(town3FirstMove.x, town3FirstMove.y);
+		r.delay(3000);
 		instaClickAndMoveWith1SDelay(town3SecondMove.x, town3SecondMove.y);
+		r.delay(3000);
 		r.keyPress(KeyEvent.VK_CONTROL);
 		instaClickAndMoveWith1SDelay(town3ThirdMove.x, town3ThirdMove.y);
 		r.delay(60);
@@ -1167,7 +1232,9 @@ public class BotHomeToWork {
 		// r.delay(6000);
 		// first step after login
 		instaClickAndMoveWith1SDelay(town3FirstMove.x, town3FirstMove.y);
+		r.delay(3000);
 		instaClickAndMoveWith1SDelay(town3SecondMove.x, town3SecondMove.y);
+		r.delay(3000);
 		r.keyPress(KeyEvent.VK_CONTROL);
 		instaClickAndMoveWith1SDelay(town3ThirdMoveGardens.x, town3ThirdMoveGardens.y);
 		r.delay(60);
@@ -1299,10 +1366,13 @@ public class BotHomeToWork {
 		// r.delay(6000);
 		// first step after login
 		instaClickAndMoveWith2SDelay(town4FirstMove.x, town4FirstMove.y);
+		r.delay(3000);
 		// going to above potion location before the gate
 		instaClickAndMoveWith2SDelay(town4SecondMove.x, town4SecondMove.y);
+		r.delay(3000);
 		// clicking the door
 		instaMoveMouse(town4ClickingDoor.x, town4ClickingDoor.y);
+		r.delay(3000);
 		r.keyPress(KeyEvent.VK_CONTROL);
 		r.delay(200);
 		r.mousePress(InputEvent.BUTTON1_MASK);
@@ -1385,10 +1455,10 @@ public class BotHomeToWork {
 		if (color80.getRGB() != ballHealthColor80) {
 			if (ra.nextBoolean()) {
 				useHealthPotion();
-				r.delay(100);
+				r.delay(10);
 			} else {
 				useHealthPotion2();
-				r.delay(100);
+				r.delay(10);
 			}
 		}
 		if (color.getRGB() != ballHealthColor) {
@@ -1505,6 +1575,18 @@ public class BotHomeToWork {
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
 		r.delay(2000);
+	}
+	
+	private static void instaClickAndMoveWith1SDelayCenterCursor(int x, int y) throws Exception {
+		r.delay(10);
+		r.mouseMove(x, y);
+		int randomDelay = ra.nextInt(40- 20 + 1) + 20;
+		r.delay(randomDelay);
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		testPosition(x, y);
+		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		r.mouseMove(clickNextToSelf.x, clickNextToSelf.y);
+		r.delay(1000);
 	}
 
 	private static void testPosition(int x, int y) throws Exception {
