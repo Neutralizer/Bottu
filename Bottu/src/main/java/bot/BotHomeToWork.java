@@ -149,13 +149,13 @@ public class BotHomeToWork {
 		pixelColorsCheck = new int[] { 1, 2, 3, 4 };
 
 		left = new Point(200, 300);
-//		right = new Point(800, 302);//DeressoBanana right
+//		right = new Point(800, 302);//Banana right
 		right = new Point(800, 335);//Bomber right
 		top = new Point(502, 110);
 		bot = new Point(501, 500);
 		lowerRight = new Point(870,610);
 		loginCounter = 0;
-		loginStashTriggerNumber = 20;
+		loginStashTriggerNumber = 30;
 		
 		run();
 
@@ -172,11 +172,11 @@ public class BotHomeToWork {
 		while (true) {
 			inCharSelect();
 			System.out.println(++loginCounter);
-//			if (loginCounter % loginStashTriggerNumber == 0) {
-//				//leave items in stash town number and logout
-//				moveToLeaveItemsInStash(4);
-//				continue;
-//			}
+			if (loginCounter % loginStashTriggerNumber == 0) {
+				//leave items in stash town number and logout
+				moveToLeaveItemsInStash(3);
+				continue;
+			}
 			// waits in loading screen and then logouts after a time 
 			// if (checkIfCharIsInLoginScreen()){
 			// //click login button
@@ -442,7 +442,7 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 100000) {
+			if (estimatedTime > 80000) {
 				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
@@ -493,14 +493,14 @@ public class BotHomeToWork {
 			// instaClickAndMoveWith1SDelay(top.x, top.y);
 			// }
 
-			// checkIfHealthIsLow();
+			// checkIfHealthIsLow(rwtq);
 			r.delay(15);
 
 			r.mouseRelease(InputEvent.BUTTON3_MASK);
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 40000) {
+			if (estimatedTime > 45000) {
 				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
