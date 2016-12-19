@@ -174,7 +174,7 @@ public class BotHomeToWork {
 			System.out.println(++loginCounter);
 			if (loginCounter % loginStashTriggerNumber == 0) {
 				//leave items in stash town number and logout
-				moveToLeaveItemsInStash(3);
+				moveToLeaveItemsInStash(4);
 				continue;
 			}
 			// waits in loading screen and then logouts after a time 
@@ -197,46 +197,15 @@ public class BotHomeToWork {
 //			inTown4AndOutsideAquaFall();
 //			outside4thTownAquaFlicker();
 			
-//			inTown4AndOutsideLake3CurseFlicker();
-//			outside4thTownFlicker();
+			inTown4AndOutsideLake3CurseFlicker();
+			outside4thTownFlicker();
 			
-			inTownAndOutsideAct3toGardens();
-			outside3rdTownGardensFlicker();
+//			inTownAndOutsideAct3toGardens();
+//			outside3rdTownGardensFlicker();
 
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 	public static void fireFlicker() throws Exception {
