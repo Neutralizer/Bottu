@@ -149,8 +149,8 @@ public class BotHomeToWork {
 		pixelColorsCheck = new int[] { 1, 2, 3, 4 };
 
 		left = new Point(200, 300);
-//		right = new Point(800, 302);//Banana right
-		right = new Point(800, 335);//Bomber right
+		right = new Point(800, 302);//Banana right
+//		right = new Point(800, 335);//Bomber right
 		top = new Point(502, 110);
 		bot = new Point(501, 500);
 		lowerRight = new Point(870,610);
@@ -206,6 +206,39 @@ public class BotHomeToWork {
 		}
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 	public static void fireFlicker() throws Exception {
@@ -1287,6 +1320,7 @@ public class BotHomeToWork {
 		BufferedImage image = r.createScreenCapture(scr);
 		Point point = null;
 		boolean found = false;
+		
 		for (int i = 0; i < image.getWidth(); i+=5) {
 			if (found) {
 				break;
@@ -1322,7 +1356,7 @@ public class BotHomeToWork {
 
 			instaMoveMouse(clickSelf.x, clickSelf.y);
 			r.mousePress(InputEvent.BUTTON1_MASK);
-			r.delay(50);
+//			r.delay(50);
 			r.mouseRelease(InputEvent.BUTTON1_MASK);
 			instaClickAndMoveWith2SDelay(point.x + 5, point.y + 5);
 			if (isFlicker) {
