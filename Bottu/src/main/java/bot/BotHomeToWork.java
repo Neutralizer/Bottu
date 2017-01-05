@@ -406,6 +406,8 @@ public class BotHomeToWork {
 			if (breakCycle) {
 				break;
 			}
+			
+			r.delay(2000);
 			ifNiceItemFound(true);
 
 			r.mousePress(InputEvent.BUTTON3_MASK);
@@ -415,11 +417,12 @@ public class BotHomeToWork {
 //			instaClickAndMoveWith1SDelay(right.x, right.y);
 //			testPosition(right.x, right.y);
 //			instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
-			instaClickAndMoveWith1SDelayCenterCursor(right.x, right.y);
 			if (ra.nextBoolean()) {
 //				instaClickAndMoveWith1SDelay(lowerRight.x, lowerRight.y);
 //				instaMoveMouse(clickNextToSelf.x, clickNextToSelf.y);
 				instaClickAndMoveWith1SDelayCenterCursor(lowerRight.x, lowerRight.y);
+			} else {
+				instaClickAndMoveWith1SDelayCenterCursor(right.x, right.y);
 			}
 			//350 - 74
 			breakCycle = checkHealthWhileFlickering();
@@ -444,7 +447,7 @@ public class BotHomeToWork {
 
 			long estimatedTime = System.currentTimeMillis() - startTime;
 			// if the time in the instance is more than 2 min - relog
-			if (estimatedTime > 80000) {
+			if (estimatedTime > 100000) {
 				if (breakCycle == false) {
 					// if it is true, then we have already logged out from the
 					// low health method
@@ -1368,10 +1371,18 @@ public class BotHomeToWork {
 	public static void originalMoveVariationInTown4CTRLPressed() {
 		// r.delay(6000);
 		// first step after login
-		instaClickAndMoveWith2SDelay(town4FirstMove.x, town4FirstMove.y);
+		instaMoveMouse(town4FirstMove.x, town4FirstMove.y);
+//		instaClickAndMoveWith2SDelay(town4FirstMove.x, town4FirstMove.y);
+		r.delay(3000);
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		r.mouseRelease(InputEvent.BUTTON1_MASK);
 		r.delay(3000);
 		// going to above potion location before the gate
-		instaClickAndMoveWith2SDelay(town4SecondMove.x, town4SecondMove.y);
+		instaMoveMouse(town4SecondMove.x, town4SecondMove.y);
+//		instaClickAndMoveWith2SDelay(town4SecondMove.x, town4SecondMove.y);
+		r.delay(3000);
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		r.mouseRelease(InputEvent.BUTTON1_MASK);
 		r.delay(3000);
 		// clicking the door
 		instaMoveMouse(town4ClickingDoor.x, town4ClickingDoor.y);
